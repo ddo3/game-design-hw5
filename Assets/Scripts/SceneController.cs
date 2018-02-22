@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class SceneController : MonoBehaviour {
 	public const int gridRows = 2;
 	public const int gridCols = 4;
@@ -14,6 +15,30 @@ public class SceneController : MonoBehaviour {
 	private MemoryCard _firstRevealed;
 	private MemoryCard _secondRevealed;
 	private int _score = 0;
+	private bool gameOver = false;
+
+
+	void OnGUI() {
+
+		if(gameOver){
+
+			//GUIStyle style = new GUIStyle();
+			//style.fontSize = 70;
+			//style.font.material.color = Color.red;
+			//GUI.Label (new Rect (275, 100, 150, 100), "GAME OVER ", style);
+			GUI.Label (new Rect (275, 100, 150, 100), "GAME OVER ");
+			
+
+			if (GUI.Button (new Rect (150, 150, 150, 100), "Start Over")) {
+				Restart ();
+			}
+
+			if (GUI.Button (new Rect (400, 150, 150, 100), "End Game")) {
+
+			}
+		}
+	}
+
 
 	public bool canReveal {
 		get {return _secondRevealed == null;}
@@ -21,6 +46,7 @@ public class SceneController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
+
 		Vector3 startPos = originalCard.transform.position;
 
 		// create shuffled list of cards
@@ -50,6 +76,7 @@ public class SceneController : MonoBehaviour {
 			}
 		}
 	}
+
 
 	// Knuth shuffle algorithm
 	private int[] ShuffleArray(int[] numbers) {
@@ -90,9 +117,24 @@ public class SceneController : MonoBehaviour {
 		
 		_firstRevealed = null;
 		_secondRevealed = null;
+
+
+		checkIfGameIsOver ();
 	}
+
+
+	private void checkIfGameIsOver(){
+		int numberOfMatchedCards = (gridRows * gridCols)/2 ;
+		if (_score == numberOfMatchedCards){
+		
+			gameOver = true;
+		}
+
+	}
+
 
 	public void Restart() {
 		Application.LoadLevel("Scene");
+		//SceneManager.LoadScene("Scene");
 	}
 }
