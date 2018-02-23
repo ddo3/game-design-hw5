@@ -25,4 +25,10 @@ public class MemoryCard : MonoBehaviour {
 	public void Unreveal() {
 		cardBack.SetActive(true);
 	}
+
+
+	public void MakeEndGameCard(){
+
+		GetComponent<SpriteRenderer>().sprite = null;
+	}
 }

@@ -16,7 +16,7 @@ public class SceneController : MonoBehaviour {
 	private MemoryCard _secondRevealed;
 	private int _score = 0;
 	private bool gameOver = false;
-
+	private bool endGame = false;
 
 	private List<MemoryCard> cards;
 
@@ -32,11 +32,14 @@ public class SceneController : MonoBehaviour {
 			
 
 			if (GUI.Button (new Rect (150, 150, 150, 100), "Start Over")) {
+				
 				Restart ();
 			}
 
 			if (GUI.Button (new Rect (400, 150, 150, 100), "End Game")) {
+				endGame = true;
 				EndGame ();
+				gameOver = false;
 			}
 		}
 	}
@@ -106,7 +109,6 @@ public class SceneController : MonoBehaviour {
 	}
 	
 	private IEnumerator CheckMatch() {
-
 		// increment score if the cards match
 		if (_firstRevealed.id == _secondRevealed.id) {
 			_score++;
@@ -130,25 +132,30 @@ public class SceneController : MonoBehaviour {
 
 
 	private void checkIfGameIsOver(){
-		int numberOfMatchedCards = (gridRows * gridCols)/2 ;
-		if (_score == numberOfMatchedCards){
-		
-			gameOver = true;
+
+		if(!endGame){
+			int numberOfMatchedCards = (gridRows * gridCols)/2 ;
+
+			if (_score == numberOfMatchedCards){
+
+				gameOver = true;
+			}
 		}
+
 
 	}
 
 	public void EndGame(){
-		Application.LoadLevel("2X4 game");
+		//Application.LoadLevel("2X4 game");
 		//clear the scene 
 
 		for (int i = 0 ; i < (gridCols * gridRows); i++){
-			cards[i] = null;
+			cards[i].MakeEndGameCard();
 		}
+
 	}
 
 	public void Restart() {
 		Application.LoadLevel("2X4 game");
-		//SceneManager.LoadScene("Scene");
 	}
 }

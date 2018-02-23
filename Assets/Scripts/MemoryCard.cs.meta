@@ -1,8 +1,16 @@
 fileFormatVersion: 2
 guid: ba6f2fa4ceffd4cc8b60c2d07efc5e73
+timeCreated: 1519405204
+licenseType: Free
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cardBack: {instanceID: 0}
+  - controller: {instanceID: 0}
+  - cardBackSprite: {fileID: 21300000, guid: bbb2b19be75304c50946141f5fdbc98a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 
