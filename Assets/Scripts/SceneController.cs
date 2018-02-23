@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 
 public class SceneController : MonoBehaviour {
 	public const int gridRows = 2;
@@ -18,6 +18,8 @@ public class SceneController : MonoBehaviour {
 	private bool gameOver = false;
 
 
+	private List<MemoryCard> cards;
+
 	void OnGUI() {
 
 		if(gameOver){
@@ -34,7 +36,7 @@ public class SceneController : MonoBehaviour {
 			}
 
 			if (GUI.Button (new Rect (400, 150, 150, 100), "End Game")) {
-
+				EndGame ();
 			}
 		}
 	}
@@ -46,6 +48,8 @@ public class SceneController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
+		//create cards array 
+		cards = new List<MemoryCard>();
 
 		Vector3 startPos = originalCard.transform.position;
 
@@ -73,6 +77,8 @@ public class SceneController : MonoBehaviour {
 				float posX = (offsetX * i) + startPos.x;
 				float posY = -(offsetY * j) + startPos.y;
 				card.transform.position = new Vector3(posX, posY, startPos.z);
+
+				cards.Add(card);
 			}
 		}
 	}
@@ -132,9 +138,17 @@ public class SceneController : MonoBehaviour {
 
 	}
 
+	public void EndGame(){
+		Application.LoadLevel("2X4 game");
+		//clear the scene 
+
+		for (int i = 0 ; i < (gridCols * gridRows); i++){
+			cards[i] = null;
+		}
+	}
 
 	public void Restart() {
-		Application.LoadLevel("Scene");
+		Application.LoadLevel("2X4 game");
 		//SceneManager.LoadScene("Scene");
 	}
 }
