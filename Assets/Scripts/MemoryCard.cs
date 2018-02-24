@@ -30,5 +30,17 @@ public class MemoryCard : MonoBehaviour {
 	public void MakeEndGameCard(){
 
 		GetComponent<SpriteRenderer>().sprite = null;
+		Destroy (this.gameObject);
+		//destroy this game object
 	}
+
+
+	public void Scale(){
+
+	}
+
+	public void Translate(){
+
+	}
+
 }
