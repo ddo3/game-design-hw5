@@ -45,17 +45,19 @@ public class SceneController : MonoBehaviour {
 			
 
 			if (GUI.Button (new Rect (centerX - 200, centerY, 150, 100), "Start Over")) {
-				gameOver = false;
+				
 				gameOverObject.SetActive (false);
 				changeSizeRestart ();
+				gameOver = false;
 				startGame ();
 			}
 
 			if (GUI.Button (new Rect (centerX + 50, centerY, 150, 100), "End Game")) {
 				endGame = true;
 				EndGame ();
-				gameOver = false;
+
 				gameOverObject.SetActive (false);
+				gameOver = false;
 			}
 		}
 	}
@@ -162,6 +164,10 @@ public class SceneController : MonoBehaviour {
 	private IEnumerator CheckMatch() {
 		// increment score if the cards match
 		if (_firstRevealed.id == _secondRevealed.id) {
+
+			_firstRevealed.shakeAndPoof ();
+			_secondRevealed.shakeAndPoof ();
+
 			_score++;
 			scoreLabel.text = "Score: " + _score;
 		}
@@ -197,6 +203,45 @@ public class SceneController : MonoBehaviour {
 
 	}
 
+	private void changeSizeRestart(){
+
+		for (int i = 1 ; i < (gridCols * gridRows); i++){
+
+			Destroy (cards [i].gameObject);
+
+		}
+
+		//cards[0]..GetComponent<SpriteRenderer>().sprite = images[0];
+
+		//now make state changes to card 0
+		originalCard.Unreveal();
+
+		//make sprite for original card not null
+		originalCard.GetComponent<SpriteRenderer>().sprite = images[0];
+
+		//reset score 
+		_score = 0;
+
+		//reset label
+		scoreLabel.text = "Score: ";
+
+	}
+
+	public void EndGame(){
+		//Application.LoadLevel("2X4 game");
+		//clear the scene 
+
+		for (int i = 0 ; i < (gridCols * gridRows); i++){
+			//cards[i].MakeEndGameCard();
+			Destroy(cards[i].gameObject);
+		}
+
+
+	}
+
+	public void Restart() {
+		Application.LoadLevel("2X4 game");
+	}
 
 	private void setNewDimensions(int size){
 		switch (size){
@@ -338,12 +383,20 @@ public class SceneController : MonoBehaviour {
 
 
 	public void LoadNewGame(int size){
+		//leave gameOver State
 		gameOver = false;
+
+		//remove game over stuff from board
 		gameOverObject.SetActive (false);
+
+		_firstRevealed = null;
+		_secondRevealed = null;
 
 		changeSizeRestart();
 
 		setNewDimensions (size);
+
+		setNewOffsetValues (size);
 
 		//create cards array 
 		cards = new List<MemoryCard>();
@@ -445,36 +498,5 @@ public class SceneController : MonoBehaviour {
 		*/
 	}
 
-	private void changeSizeRestart(){
-		
-		for (int i = 1 ; i < (gridCols * gridRows); i++){
 
-			Destroy (cards [i].gameObject);
-
-		}
-
-		//now make state changes to card 0
-		originalCard.Unreveal();
-
-		_score = 0;
-
-		scoreLabel.text = "Score: ";
-
-	}
-
-	public void EndGame(){
-		//Application.LoadLevel("2X4 game");
-		//clear the scene 
-
-		for (int i = 0 ; i < (gridCols * gridRows); i++){
-			//cards[i].MakeEndGameCard();
-			Destroy(cards[i].gameObject);
-		}
-
-
-	}
-
-	public void Restart() {
-		Application.LoadLevel("2X4 game");
-	}
 }
