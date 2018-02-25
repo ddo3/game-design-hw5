@@ -11,7 +11,9 @@ public class SceneController : MonoBehaviour {
 	[SerializeField] private Sprite[] images;
 	[SerializeField] private TextMesh scoreLabel;
 	[SerializeField] private Camera camera;
-	
+	[SerializeField] private GameObject gameOverObject;
+
+
 	private MemoryCard _firstRevealed;
 	private MemoryCard _secondRevealed;
 	private int _score = 0;
@@ -39,11 +41,12 @@ public class SceneController : MonoBehaviour {
 			//style.fontSize = 70;
 			//style.font.material.color = Color.red;
 			//GUI.Label (new Rect (275, 100, 150, 100), "GAME OVER ", style);
-			GUI.Label (new Rect (centerX, centerY - 50, 150, 100), "GAME OVER ");
+			//GUI.Label (new Rect (centerX, centerY - 50, 150, 100), "GAME OVER ");
 			
 
 			if (GUI.Button (new Rect (centerX - 200, centerY, 150, 100), "Start Over")) {
 				gameOver = false;
+				gameOverObject.SetActive (false);
 				changeSizeRestart ();
 				startGame ();
 			}
@@ -52,6 +55,7 @@ public class SceneController : MonoBehaviour {
 				endGame = true;
 				EndGame ();
 				gameOver = false;
+				gameOverObject.SetActive (false);
 			}
 		}
 	}
@@ -68,6 +72,9 @@ public class SceneController : MonoBehaviour {
 
 	private void startGame(){
 		//create cards array 
+
+		gameOverObject.SetActive(false);
+
 		cards = new List<MemoryCard>();
 
 		Vector3 startPos = originalCard.transform.position;
@@ -183,6 +190,7 @@ public class SceneController : MonoBehaviour {
 			if (_score == numberOfMatchedCards){
 
 				gameOver = true;
+				gameOverObject.SetActive (true);
 			}
 		}
 
@@ -294,7 +302,6 @@ public class SceneController : MonoBehaviour {
 		return cardScale;
 	}
 
-
 	private Vector3 getCardTrans(int size){
 
 		Vector3 trans;
@@ -332,6 +339,7 @@ public class SceneController : MonoBehaviour {
 
 	public void LoadNewGame(int size){
 		gameOver = false;
+		gameOverObject.SetActive (false);
 
 		changeSizeRestart();
 
