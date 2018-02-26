@@ -45,8 +45,11 @@ public class MemoryCard : MonoBehaviour {
 
 	}
 
-	public void Translate(){
+	public void Translate(Vector3 trans){
+		
+		transform.position = trans;
 
+		//transform.Translate(trans);
 	}
 
 	void Update(){

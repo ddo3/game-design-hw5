@@ -25,7 +25,9 @@ public class SceneController : MonoBehaviour {
 	//
 	private List<MemoryCard> cards;
 
-	private Vector3 startPos = new Vector3(-3f, 1.45f, 0f);
+	private Vector3 startPos;//= new Vector3(-3f, 1.45f, 0f);
+	private Vector3 originalStartPos = new Vector3(-3f, 1.45f, 0f);
+
 
 	void OnGUI() {
 
@@ -71,6 +73,8 @@ public class SceneController : MonoBehaviour {
 	// Use this for initialization
 	void Start() {
 		
+		startPos = new Vector3(-3f, 1.45f, 0f);
+
 		Object[] spriteObjects = Resources.LoadAll( "", typeof(Sprite));
 
 		actualSprites = new Sprite[spriteObjects.Length];
@@ -92,7 +96,7 @@ public class SceneController : MonoBehaviour {
 
 		cards = new List<MemoryCard>();
 
-		Vector3 startPos = originalCard.transform.position;
+		//Vector3 startPos = originalCard.transform.position;
 
 		// create shuffled list of cards
 		int[] numbers = createShuffledArray();
@@ -247,7 +251,11 @@ public class SceneController : MonoBehaviour {
 	}
 
 	public void Restart() {
-		Application.LoadLevel("2X4 game");
+		//Application.LoadLevel("2X4 game");
+		gameOverObject.SetActive (false);
+		changeSizeRestart ();
+		gameOver = false;
+		startGame ();
 	}
 
 	private void setNewDimensions(int size){
@@ -354,38 +362,36 @@ public class SceneController : MonoBehaviour {
 		return cardScale;
 	}
 
-	private Vector3 getCardTrans(int size){
+	private void setCardTrans(int size){
 
-		Vector3 trans;
 
 		switch (size){
 
 		case 8:
-			trans = startPos;
+			startPos = originalStartPos;
 			break;
 
 		case 10:
-			trans = new Vector3(startPos.x - 5, startPos.y, startPos.z);
+			startPos = new Vector3(originalStartPos.x - .8f, originalStartPos.y, 0f);
 			break;
 
 		case 12:
-			trans = new Vector3(startPos.x - 5f, startPos.y + 5f, startPos.z);
+			startPos = new Vector3(originalStartPos.x + .1f, originalStartPos.y + .4f, 0f);
 			break;
 
 		case 16:
-			trans = new Vector3(startPos.x - 5f, startPos.y + 5f, startPos.z);
+			startPos = new Vector3(originalStartPos.x + .2f, originalStartPos.y + .7f, 0f);
 			break;
 
 		case 20:
-			trans = new Vector3(startPos.x - 5f, startPos.y+ 5f, startPos.z);
+			startPos = new Vector3(originalStartPos.x + .3f, originalStartPos.y + .7f, 0f);
 			break;
 
 		default:
-			trans = new Vector3(startPos.x - 5f, startPos.y+ 5f, startPos.z);
+			startPos = originalStartPos;
 			break;
 
 		}
-		return trans;
 	}
 
 
@@ -408,7 +414,14 @@ public class SceneController : MonoBehaviour {
 		//create cards array 
 		cards = new List<MemoryCard>();
 
-		Vector3 startPos = originalCard.transform.position;
+		float cardScale = getCardScale (size);
+
+		//translate the card if needed
+		setCardTrans (size);
+
+		//scale the card 
+		originalCard.gameObject.transform.localScale = new Vector3(cardScale, cardScale, 1);
+
 
 		// create shuffled list of cards
 		int[] numbers = createShuffledArray();
@@ -432,7 +445,7 @@ public class SceneController : MonoBehaviour {
 
 				float posX = (offsetX * i) + startPos.x;
 				float posY = -(offsetY * j) + startPos.y;
-				card.transform.position = new Vector3(posX, posY, startPos.z);
+				card.transform.position = new Vector3(posX, posY, 0);
 
 				cards.Add(card);
 			}
