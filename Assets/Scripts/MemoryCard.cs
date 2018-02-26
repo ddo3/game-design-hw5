@@ -65,7 +65,7 @@ public class MemoryCard : MonoBehaviour {
 
 		if (timer >= 2.5) {
 			//Destroy(this.gameObject);
-			//GetComponent<SpriteRenderer>().sprite = null;
+			GetComponent<SpriteRenderer>().sprite = null;
 
 			GetComponent<ParticleSystem>().Stop ();
 			cardDies = false;
@@ -79,8 +79,6 @@ public class MemoryCard : MonoBehaviour {
 		cardDies = true;
 
 		ParticleSystem p = GetComponent<ParticleSystem> ();
-
-		//p.startColor = new Color(0.5f, 0.5f, 0.5f, 1);
 
 		p.Play ();
 

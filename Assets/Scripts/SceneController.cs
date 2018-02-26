@@ -13,6 +13,8 @@ public class SceneController : MonoBehaviour {
 	[SerializeField] private Camera camera;
 	[SerializeField] private GameObject gameOverObject;
 
+	//private 
+	private Sprite[] actualSprites;
 
 	private MemoryCard _firstRevealed;
 	private MemoryCard _secondRevealed;
@@ -69,6 +71,18 @@ public class SceneController : MonoBehaviour {
 		
 	// Use this for initialization
 	void Start() {
+		
+		Object[] spriteObjects = Resources.LoadAll( "", typeof(Sprite));
+
+		actualSprites = new Sprite[spriteObjects.Length];
+
+		//populate the actaul sprites array
+
+		for(int i = 0; i < spriteObjects.Length; i++){
+			actualSprites [i] = spriteObjects [i] as Sprite;
+		}
+
+
 		startGame ();
 	}
 
@@ -99,7 +113,7 @@ public class SceneController : MonoBehaviour {
 				// next card in the list for each grid space
 				int index = j * gridCols + i;
 				int id = numbers[index];
-				card.SetCard(id, images[id]);
+				card.SetCard(id, actualSprites[id]);
 
 				float posX = (offsetX * i) + startPos.x;
 				float posY = -(offsetY * j) + startPos.y;
@@ -108,6 +122,21 @@ public class SceneController : MonoBehaviour {
 				cards.Add(card);
 			}
 		}
+	}
+
+	private int[] getRandomNumbers(){
+
+		List<int> t = new List<int> ();
+
+		for(int i = 0; i < (gridCols * gridRows) ; i ++){
+
+			//get a random number between 0 and 51
+
+			//Add that number to list twice
+
+		}
+
+		return t.ToArray();
 	}
 
 
@@ -217,7 +246,7 @@ public class SceneController : MonoBehaviour {
 		originalCard.Unreveal();
 
 		//make sprite for original card not null
-		originalCard.GetComponent<SpriteRenderer>().sprite = images[0];
+		originalCard.GetComponent<SpriteRenderer>().sprite = actualSprites[0];
 
 		//reset score 
 		_score = 0;
@@ -421,7 +450,7 @@ public class SceneController : MonoBehaviour {
 				// next card in the list for each grid space
 				int index = j * gridCols + i;
 				int id = numbers[index];
-				card.SetCard(id, images[id]);
+				card.SetCard(id, actualSprites[id]);
 
 				float posX = (offsetX * i) + startPos.x;
 				float posY = -(offsetY * j) + startPos.y;
