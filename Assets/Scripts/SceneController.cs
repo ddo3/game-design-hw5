@@ -22,16 +22,20 @@ public class SceneController : MonoBehaviour {
 	//
 	private bool gameOver = false;
 	private bool endGame = false;
+	private bool displayGameOverObject = false;
+	private float speed = 15.0f; //how fast it shakes
+
 	//
 	private List<MemoryCard> cards;
 
 	private Vector3 startPos;//= new Vector3(-3f, 1.45f, 0f);
 	private Vector3 originalStartPos = new Vector3(-3f, 1.45f, 0f);
 
+	private float timer = 0.0f;
 
 	void OnGUI() {
 
-		if(gameOver){
+		if(gameOver && !displayGameOverObject){
 			int width = camera.pixelWidth;
 
 			int height = camera.pixelHeight;
@@ -49,7 +53,7 @@ public class SceneController : MonoBehaviour {
 
 			if (GUI.Button (new Rect (centerX - 200, centerY, 150, 100), "Start Over")) {
 				
-				gameOverObject.SetActive (false);
+				//gameOverObject.SetActive (false);
 				changeSizeRestart ();
 				gameOver = false;
 				startGame ();
@@ -59,7 +63,7 @@ public class SceneController : MonoBehaviour {
 				endGame = true;
 				EndGame ();
 
-				gameOverObject.SetActive (false);
+				//gameOverObject.SetActive (false);
 				gameOver = false;
 			}
 		}
@@ -88,6 +92,25 @@ public class SceneController : MonoBehaviour {
 
 		startGame ();
 	}
+
+
+	void Update(){
+		
+		if ( displayGameOverObject && timer <= 2.5f){
+			
+			float x = Mathf.Sin(Time.time * speed)*.005f;
+
+			gameOverObject.transform.Translate(new Vector3(x,0,0));
+
+			timer += Time.deltaTime;
+		}else{
+			
+			displayGameOverObject = false;
+			timer = 0.0f;
+			gameOverObject.SetActive (false);
+		}
+	}
+
 
 	private void startGame(){
 		//create cards array 
@@ -206,13 +229,16 @@ public class SceneController : MonoBehaviour {
 
 			if (_score == numberOfMatchedCards){
 
-				gameOver = true;
+
 				gameOverObject.SetActive (true);
+				displayGameOverObject = true;
+				gameOver = true;
 			}
 		}
 
 
 	}
+
 
 	private void changeSizeRestart(){
 
@@ -363,8 +389,6 @@ public class SceneController : MonoBehaviour {
 	}
 
 	private void setCardTrans(int size){
-
-
 		switch (size){
 
 		case 8:
@@ -450,72 +474,7 @@ public class SceneController : MonoBehaviour {
 				cards.Add(card);
 			}
 		}
-
-
-		/*
-		gameOver = false;
-
-		_firstRevealed = null;
-		_secondRevealed = null;
-
-		changeSizeRestart();
-
-		setNewDimensions (size);
-
-		setNewOffsetValues (size);
-
-		//create cards array 
-		this.cards = new List<MemoryCard>();
-
-		float cardScale = getCardScale (size);
-
-
-		//Vector3 startPos = originalCard.transform.position;
-
-		//translate the card if needed
-		//originalCard.gameObject.transform.position = getCardTrans(size);
-
-		//scale the card 
-		originalCard.gameObject.transform.localScale = new Vector2(cardScale, cardScale);
-
-
-		// create shuffled list of cards
-		int[] numbers = createShuffledArray();
-
-		// place cards in a grid
-		for (int i = 0; i < gridCols; i++) {
-			for (int j = 0; j < gridRows; j++) {
-				MemoryCard card;
-
-				// use the original for the first grid space
-				if (i == 0 && j == 0) {
-					card = originalCard;
-				} else {
-					card = Instantiate(originalCard) as MemoryCard;
-				}
-
-				// next card in the list for each grid space
-				int index = j * gridCols + i;
-				int id = numbers[index];
-				card.SetCard(id, images[id]);
-
-				float posX = (offsetX * i) + startPos.x;
-				float posY = -(offsetY * j) + startPos.y;
-
-				card.transform.position = new Vector3(posX, posY, startPos.z);
-
-				card.transform.localScale = new Vector2(cardScale, cardScale);
-
-				if(id = 1 || id == 2){
-					card.Unreveal ();
-				}
-
-
-				cards.Add(card);
-
-			}
-		}
-		*/
+			
 	}
 
 
