@@ -13,7 +13,6 @@ public class SceneController : MonoBehaviour {
 	[SerializeField] private Camera camera;
 	[SerializeField] private GameObject gameOverObject;
 
-	//private 
 	private Sprite[] actualSprites;
 
 	private MemoryCard _firstRevealed;
@@ -124,48 +123,27 @@ public class SceneController : MonoBehaviour {
 		}
 	}
 
-	private int[] getRandomNumbers(){
-
-		List<int> t = new List<int> ();
-
-		for(int i = 0; i < (gridCols * gridRows) ; i ++){
-
-			//get a random number between 0 and 51
-
-			//Add that number to list twice
-
-		}
-
-		return t.ToArray();
-	}
-
 
 	private int[] createShuffledArray(){
-		int[] ans = new int[gridCols * gridRows];
+		List<int> list = new List<int> ();
 
-		int count = 0;
-		bool countAdded = false;
+		for(int i = 0; i < (gridCols * gridRows)/2 ; i ++){
 
+			//get a random number between 0 and 51
+			int num = Random.Range(0,51);
 
-		for (int i = 0; i < (gridCols * gridRows); i++) {
+			//Add that number to list twice
+			list.Add(num);
+			list.Add (num);
 
-			if (!countAdded) {
-				ans [i] = count;
-				countAdded = true;
-			} else {
-				ans [i] = count;
-
-				count++;
-
-				countAdded = false;
-			}
-				
 		}
 
-		//shuffle array
-		ans = ShuffleArray(ans);
+		int[] arrayOfNums = list.ToArray();
 
-		return ans;
+		//shuffle array
+		arrayOfNums = ShuffleArray(arrayOfNums);
+
+		return arrayOfNums;
 	}
 
 
